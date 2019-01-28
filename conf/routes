@@ -14,4 +14,5 @@ GET     /message                    controllers.AsyncController.message
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 GET     /signup                    controllers.AuthenticationController.signUp
-GET     /login                     controllers.AuthenticationController.login
+#GET     /login                     controllers.AuthenticationController.login
+POST     /login                     controllers.AuthenticationController.login

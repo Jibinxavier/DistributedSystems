@@ -54,6 +54,8 @@ class LoginScreen extends Component {
     }
     render () {
         return (
+            <DivWithErrorHandling showError={this.state.showError}>
+           
             <div className="loginscreen">
               {this.state.loginscreen}
               <div>
@@ -65,9 +67,20 @@ class LoginScreen extends Component {
                 </MuiThemeProvider>
               </div>
             </div>
+            </DivWithErrorHandling>
           );
         }
 }
+const withErrorHandling = WrappedComponent => ({ showError, children }) => {
+    return (
+      <WrappedComponent>
+        {showError && <div className="error-message">Oops! Something went wrong!</div>}
+        {children}
+      </WrappedComponent>
+    );
+  };
+  const DivWithErrorHandling = withErrorHandling(({children}) => <div>{children}</div>)
+
 const style = {
     margin: 15,
   };

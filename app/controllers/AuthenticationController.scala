@@ -13,7 +13,8 @@ class AuthenticationController @Inject()(cc: ControllerComponents) extends Abstr
   }
 
   def login = Action {
-    Ok(views.html.index("Here's your LOGin page"))
+    Ok("hello signed up")
+
   }
 
 }

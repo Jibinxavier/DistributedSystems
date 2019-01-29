@@ -4,6 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import axios from 'axios';
+import HomePage from './HomePage';
 
 
 class Login extends Component {
@@ -52,11 +53,11 @@ class Login extends Component {
             console.log(response);
             if(response.data.code == 200){
                 console.log("Login successfull");
-                var uploadScreen = []
-                uploadScreen.push( 
-                    <UploadScreen appContext={self.props.appContext}/>)
+                var homepage = []
+                homepage.push( 
+                    <HomePage appContext={self.props.appContext}/>)
                 self.props.appContext.setState(
-                    {loginPage: [], uploadScreen: uploadScreen}
+                    {loginPage: [], homepage: homepage}
                 )
                 
             }

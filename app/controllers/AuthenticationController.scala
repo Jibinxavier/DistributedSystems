@@ -16,19 +16,11 @@ class AuthenticationController @Inject()(cc: ControllerComponents) extends Abstr
     ) tupled
   def signUp = Action {
 
-    Ok(views.html.index("Here's your sign up page"))
+    Ok("Here's your sign up page")
   }
 
-  def login =  Action { request =>
-    request.body.asJson.map { json =>
-      json.validate[(String, Long)].map{
-        case (name, age) => Ok("Hello " + name + ", you're "+age)
-      }.recoverTotal{
-        e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
-      }
-    }.getOrElse {
-      BadRequest("Expecting Json data")
-    }
+  def login =  Action {
+    Ok("here is your login pager")
   }
 
 }

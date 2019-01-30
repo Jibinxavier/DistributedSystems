@@ -14,6 +14,7 @@ class Signup extends Component {
             password: ''
         }
     }
+    
 
     render () {
         return (
@@ -47,7 +48,7 @@ class Signup extends Component {
         );
     }
     handleClick(event){
-        var apiBaseUrl = "http://localhost:9000/";
+        var apiBaseUrl = "http://localhost:9000";
         console.log("vaules ",this.state.first_name,this.state.last_name,this.state.email,this.state.password);
         var self = this;
         var payload = {

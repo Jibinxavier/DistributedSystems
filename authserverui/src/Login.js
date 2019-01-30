@@ -52,7 +52,7 @@ class Login extends Component {
         axios.post(apiBaseUrl+'login', payload).then( function(response){
             console.log(response);
             if(response.data.code == 200){
-                console.log("Login successfull");
+                console.log("LOGIN SUCCCESSFULL");
                 var homepage = []
                 homepage.push( 
                     <HomePage appContext={self.props.appContext}/>)

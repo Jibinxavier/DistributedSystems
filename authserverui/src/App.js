@@ -20,6 +20,7 @@ class App extends Component {
     loginPage.push(<LoginScreen parentContext={this}/>);
     this.setState({ loginPage:loginPage  })
   }
+  
   render() {
     return (
       <div className="App">

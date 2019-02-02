@@ -22,7 +22,7 @@ class LoginScreen extends Component {
         var loginscreen = []
         console.log(this.props.parentContext)
         loginscreen.push(<Login parentContext={this} appContext={this.props.parentContext}/>);
-        var loginmessage = "Not registered, Signup NoW!!";
+        var loginmessage = "";
         this.setState({
             loginscreen:loginscreen,
             loginmessage:loginmessage

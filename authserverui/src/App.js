@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     this.state={
       loginPage:[],
-      uploadScreen:[]
+      homePage:[]
     }
   }
   componentWillMount(){
@@ -25,7 +25,7 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.loginPage}
-        {this.state.uploadScreen}
+        {this.state.homePage}
       </div>
     );
   }

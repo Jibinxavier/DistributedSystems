@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField'
 import axios from 'axios';
 import HomePage from './HomePage';
+import Signup from './Signup';
 
 
 class Login extends Component {
@@ -12,7 +13,8 @@ class Login extends Component {
         super(props);
         this.state = {
             username:'',
-            password:''
+            password:'',
+            toSignUp: false
         }
     }
     render() {
@@ -22,7 +24,7 @@ class Login extends Component {
                     <div>
                         <AppBar title="Login"/>
                         <br/>
-                        <TextField hintText="Enter your username"
+                        <TextField hintText="Enter your username"   
                                 floatingLabelText="Username"
                                 onChange = {(envent, newValue) => this.setState({username:newValue})
                                 }/>
@@ -34,7 +36,10 @@ class Login extends Component {
                                 onChange = {(event,newValue) => this.setState({password:newValue})}
                         />
                         <br/>
-                        <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+                        <br>
+                        </br>
+                        <RaisedButton label="Login" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
+                        <RaisedButton label="Signup" primary={false} style={style} onClick={(event) => this.handleSignupClick(event)}/>
                     </div>
                 </MuiThemeProvider>
 
@@ -43,6 +48,7 @@ class Login extends Component {
 
     }
     handleClick(event){
+      
         var apiBaseUrl = "http://localhost:9000/";
         var self = this;
         var payload = {
@@ -50,24 +56,35 @@ class Login extends Component {
             "password": this.state.password
         }
         axios.post(apiBaseUrl+'login', payload).then( function(response){
-            console.log(response);
-            if(response.data.code == 200){
-                console.log("LOGIN SUCCCESSFULL");
+            console.log("heres the response")
+            console.log(response)
+            if(response.status === 200){ 
                 var homepage = []
+                console.log(self.props)
                 homepage.push( 
                     <HomePage appContext={self.props.appContext}/>)
                 self.props.appContext.setState(
-                    {loginPage: [], homepage: homepage}
+                    {loginPage: [], homePage: homepage}
                 )
                 
             }
-            else if (response.data.code == 204){
+            else if (response.data.code === 204){
                 console.log("Username password do not match")
                 
             }
         }).catch(function (error){
+            console.log("Error occurred")
+
             console.log(error)
         });
+    }
+    handleSignupClick(event){
+        var signup = []
+        signup.push( 
+            <Signup appContext={this.props.appContext}/>)
+        this.props.appContext.setState(
+            {loginPage: signup, homepage: []}
+        )
     }
 }
 

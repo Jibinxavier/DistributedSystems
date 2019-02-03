@@ -48,7 +48,7 @@ class LoginScreen extends Component {
                             loginscreen:loginscreen,
                             loginmessage:loginmessage,
                             loginButtons:loginButtons,
-                            isLogin:false
+                            loggedIN:false
                         })
         }
         else {

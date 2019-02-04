@@ -6,8 +6,7 @@ import TextField from 'material-ui/TextField'
 import axios from 'axios';
 import HomePage from './HomePage';
 import Signup from './Signup';
-
-
+ 
 class Login extends Component {
     constructor(props){
         super(props);
@@ -20,7 +19,7 @@ class Login extends Component {
     render() {
         return(
             <div>
-                <MuiThemeProvider>
+                <MuiThemeProvider >
                     <div>
                         <AppBar title="Login"/>
                         <br/>
@@ -60,8 +59,7 @@ class Login extends Component {
             console.log(response)
             if(response.status === 200){ 
                 var homepage = []
-                console.log(self.props)
-                homepage.push( 
+                 homepage.push( 
                     <HomePage appContext={self.props.appContext}/>)
                 self.props.appContext.setState(
                     {loginPage: [], homePage: homepage}

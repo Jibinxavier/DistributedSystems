@@ -14,4 +14,13 @@ libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
-      
+val testPythonTask = TaskKey[Unit]("Userdatabase", "Run Python user API.")
+
+val command = "python3 server.py"
+val workingDirectory = new File("./database")
+
+testPythonTask := {
+  val s: TaskStreams = streams.value
+  s.log.info("Executing task Userdatabase")
+  Process(command) ! s.log
+}

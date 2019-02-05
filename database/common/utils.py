@@ -8,23 +8,23 @@ from pymongo import MongoClient
 
 
 class UserDb:
-    def __init__(self,host="localhost",port=27017):
+    def __init__(self,host="localhost",port=27017, collection):
         self.client = MongoClient(host,port)
         self.db = self.client['user-db']
-        self.user_collection = self.db['user_collection']
+        self.collection = self.db['user_collection']
     def insert(self, doc):
-        self.user_collection.insert_one(doc)
+        self.collection.insert_one(doc)
         return  {"message":"Signup successful", "code": 1}
     def signup(self, username, password):
         doc  = { 'username': username, 'password': password }
-        user = self.user_collection.find_one({ 'username': username } )
+        user = self.collection.find_one({ 'username': username } )
         if user:  
             return  {"message":"User already exists", "code": 2}
         else:
             return self.insert(doc)
         
     def is_authorised(self, username, password): 
-        user = self.user_collection.find_one({ 'username': username } )
+        user = self.collection.find_one({ 'username': username } )
         if user:  
             print(user)
             return {"message":str( user['password']==password), "code": 3}

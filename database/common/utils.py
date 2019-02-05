@@ -1,17 +1,33 @@
 from pymongo import MongoClient 
+from subprocess import call,check_output
+import sys
 """
 1: successful signup
 2: User already exists
 3: True/False authenticated
 4: User does not exists
 """
+def standup_db():
+    cmd_out = str(check_output(["docker", "ps", "-a"]))
 
+    if "mongo" not in cmd_out:
+        print("Standing up mongodb database")
+        call(["docker", "run","-rm","--name", "mongodb", "-d", "--network","host", "mongo", ])
+        # docker container is cleaned up after exiting
+    elif  "mongo"in cmd_out and "Exited" in cmd_out  :
+        print("Stale mongodb database in docker found.")
+        print("To continue execute")
+        print("docker rm mongodb")
+        sys.exit(1)
+    else:
+
+        print("Database already setup")
 
 class UserDb:
-    def __init__(self,host="localhost",port=27017, collection):
+    def __init__(self,host="localhost",port=27017, collection_name="user_collection"):
         self.client = MongoClient(host,port)
         self.db = self.client['user-db']
-        self.collection = self.db['user_collection']
+        self.collection = self.db[collection_name]
     def insert(self, doc):
         self.collection.insert_one(doc)
         return  {"message":"Signup successful", "code": 1}

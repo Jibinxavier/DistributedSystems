@@ -1,12 +1,12 @@
-from common.utils import UserDb
+from common.utils import UserDb,standup_db
+from pymongo import MongoClient 
 
+def build_test_db(host="localhost",port=27017, collection_name="test-collection"):
+    standup_db()
 
-class TestUserDb(UserDb):
-    def __init__(self,host="localhost",port=27017):
-        super().__init__(host,port, "test-collection")
-    def find_user(self, username):
-        user = self.collection.find_one({ 'username': username } )
-        return user
-
-    
+    client = MongoClient(host,port)
+    db = client['user-db']
+    collection = db[collection_name]
+    return collection
+ 
 

@@ -87,7 +87,7 @@ class Login extends Component {
 }
 
 const style = {
-    margin: 30,
+    margin: 40,
 };
 
 

@@ -1,13 +1,13 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
+import models.UserObj
 import play.api.mvc.{AbstractController, ControllerComponents}
- 
 import play.api.libs.json._
 // you need this import to have combinators
 import play.api.libs.functional.syntax._
 
-class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: UserDao) extends AbstractController(cc) {
+class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: UserObj) extends AbstractController(cc) {
 
 
   implicit val rds = (

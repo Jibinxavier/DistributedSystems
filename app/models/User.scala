@@ -1,2 +1,7 @@
 package models
-case class User(userName: String, password: String)
+class User(userName: String, password: String){
+
+  def toJsonString(): String ={
+    "userName:" +this.userName +",password:"+ this.password
+  }
+}

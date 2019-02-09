@@ -1,31 +1,42 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-import models.UserObj
-import play.api.mvc.{AbstractController, ControllerComponents}
+import models.{User, UserObj}
+import play.api.mvc.{AbstractController, ControllerComponents, Request}
 import play.api.libs.json._
+import akka.actor.ActorSystem
+
 // you need this import to have combinators
 import play.api.libs.functional.syntax._
 
 class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: UserObj) extends AbstractController(cc) {
 
 
-  implicit val rds = (
-    (__ \ 'name).read[String] and
-      (__ \ 'age).read[Long]
-    ) tupled
-  def signUp = Action { implicit request =>
-
-      if () {
-        Ok("Legitamate User")
+  def signUp = Action { request =>
+    request.body.asJson.map { json =>
+      json.validate[(String, String)].map{
+        case (userName, password) =>
+          Ok(userDao.signup( new User(userName, password)))
+      }.recoverTotal{
+        e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
       }
-      else {
-        Status(403)("Forbidden")
-      }
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    }
   }
 
-  def login =  Action {
-    Ok("here is your login pager")
+
+  def login = Action { request =>
+    request.body.asJson.map { json =>
+      json.validate[(String, String)].map{
+        case (userName, password) =>
+          Ok(userDao.signup( new User(userName, password)))
+      }.recoverTotal{
+        e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
+      }
+    }.getOrElse {
+      BadRequest("Expecting Json data")
+    }
   }
-  def getUserDetails()
+
 }

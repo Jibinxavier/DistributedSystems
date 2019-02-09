@@ -2,9 +2,7 @@ package models
 
 import com.fasterxml.jackson.databind.JsonNode
 import javax.inject.{Inject, Singleton}
-import play.api.libs.json.JsValue
 import play.libs.ws._
-
 @Singleton
 class UserObj @Inject()(val ws: WSClient) extends WSBodyReadables with WSBodyWritables{
    def signup(user: User): JsonNode= {
@@ -13,20 +11,25 @@ class UserObj @Inject()(val ws: WSClient) extends WSBodyReadables with WSBodyWri
     //    println("The user name is " + userName + " password is " + password)
      var url = "http://127.0.0.1:8080/user/signup"
 
-     val request: WSRequest = ws.url(url)
-     val complexRequest: WSRequest = request.addHeader("Accept", "application/json")
-     val futureResponse = complexRequest.post("user_name:" + user.userName + ",password:" + user.password)
-     Thread.sleep(1000)
-
-
-     futureResponse.toCompletableFuture.get().asJson()
+     return userdbConnector(url, user.toJsonString())
   }
+
+
   def login(user: User): JsonNode ={
+
+
     var url = "http://127.0.0.1:8080/user/login"
 
-    val request: WSRequest = ws.url(url)
+
+    return userdbConnector(url, user.toJsonString())
+  }
+  def userdbConnector(endpoint: String, data: String): JsonNode = {
+
+
+    val request: WSRequest = ws.url(endpoint)
     val complexRequest: WSRequest = request.addHeader("Accept", "application/json")
-    val futureResponse = complexRequest.post("user_name:" + user.userName + ",password:" + user.password)
+
+    val futureResponse = complexRequest.post(data)
     Thread.sleep(1000)
 
 

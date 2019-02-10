@@ -1,29 +1,29 @@
 package models
-
-import com.fasterxml.jackson.databind.JsonNode
 import javax.inject.{Inject, Singleton}
 import play.libs.ws._
+import play.api.Configuration
 @Singleton
-class UserObj @Inject()(val ws: WSClient) extends WSBodyReadables with WSBodyWritables{
-   def signup(user: User): JsonNode= {
+class UserObj @Inject()(val ws: WSClient, config: Configuration) extends WSBodyReadables with WSBodyWritables{
+   def signup(user: User): String= {
     // user could have already signed up
     // or user could be new
     //    println("The user name is " + userName + " password is " + password)
-     var url = "http://127.0.0.1:8080/user/signup"
+
+     val url =  "%s/user/signup".format( config("pythonDb"))
 
      return userdbConnector(url, user.toJsonString())
   }
 
 
-  def login(user: User): JsonNode ={
+  def login(user: User): String ={
 
 
-    var url = "http://127.0.0.1:8080/user/login"
-
+    var url = "%s/user/login".format( config("pythonDb"))
+    //
 
     return userdbConnector(url, user.toJsonString())
   }
-  def userdbConnector(endpoint: String, data: String): JsonNode = {
+  def userdbConnector(endpoint: String, data: String): String = {
 
 
     val request: WSRequest = ws.url(endpoint)
@@ -33,6 +33,6 @@ class UserObj @Inject()(val ws: WSClient) extends WSBodyReadables with WSBodyWri
     Thread.sleep(1000)
 
 
-    return futureResponse.toCompletableFuture.get().asJson()
+    return futureResponse.toCompletableFuture.get().asJson().toString()
   }
 }

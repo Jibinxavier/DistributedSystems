@@ -9,7 +9,7 @@ class UserObj @Inject()(val ws: WSClient, config: Configuration) extends WSBodyR
     // or user could be new
     //    println("The user name is " + userName + " password is " + password)
 
-     val url =  "%s/user/signup".format( config("pythonDb"))
+     val url =  "%s/user/signup".format( config.get[String]("pythonDb"))
 
      return userdbConnector(url, user.toJsonString())
   }
@@ -18,7 +18,7 @@ class UserObj @Inject()(val ws: WSClient, config: Configuration) extends WSBodyR
   def login(user: User): String ={
 
 
-    var url = "%s/user/login".format( config("pythonDb"))
+    var url = "%s/user/login".format( config.get[String]("pythonDb"))
     //
 
     return userdbConnector(url, user.toJsonString())

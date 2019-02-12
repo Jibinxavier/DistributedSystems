@@ -14,8 +14,7 @@ class User(userName: String, password: String){
     "userName:" +this.userName +",password:"+ this.password
   }
   def encContent(): Unit ={
-    implicit val ctrStrategy: IvGen[IO, AES128CTR] = AES128CTR.defaultIvStrategy[IO]
-    implicit val cachedInstance: IO[Encryptor[IO, AES128CTR, SecretKey]] = AES128CTR.genEncryptor[IO] //Cache the implicit
+
     val toEncrypt: Array[Byte] = "hi hello welcome to tsec".utf8Bytes
 
 

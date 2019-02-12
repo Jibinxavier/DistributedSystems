@@ -15,3 +15,4 @@ dist
 /.settings
 /__pycache__
 /.pytest_cache
+.vagrant/

@@ -2,8 +2,13 @@ package models
 import javax.inject.{Inject, Singleton}
 import play.libs.ws._
 import play.api.Configuration
+import services.Encryption
+
+/*
+  This object will be used to talk to user database which has an interface written in python
+ */
 @Singleton
-class UserObj @Inject()(val ws: WSClient, config: Configuration) extends WSBodyReadables with WSBodyWritables{
+class UserDBConnector @Inject()(val ws: WSClient, config: Configuration, encryptor: Encryption) extends WSBodyReadables with WSBodyWritables{
    def signup(user: User): String= {
     // user could have already signed up
     // or user could be new
@@ -19,10 +24,11 @@ class UserObj @Inject()(val ws: WSClient, config: Configuration) extends WSBodyR
 
 
     var url = "%s/user/login".format( config.get[String]("pythonDb"))
-    //
+    // TODO parse the response and add tokenGenerator()s
 
     return userdbConnector(url, user.toJsonString())
   }
+
   def userdbConnector(endpoint: String, data: String): String = {
 
 
@@ -31,7 +37,6 @@ class UserObj @Inject()(val ws: WSClient, config: Configuration) extends WSBodyR
 
     val futureResponse = complexRequest.post(data)
     Thread.sleep(1000)
-
 
     return futureResponse.toCompletableFuture.get().asJson().toString()
   }

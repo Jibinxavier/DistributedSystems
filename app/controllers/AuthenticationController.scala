@@ -1,13 +1,13 @@
 package controllers
 
 import javax.inject.{Inject}
-import models.{User, UserObj}
+import models.{User, UserDBConnector}
 import play.api.mvc.{AbstractController, ControllerComponents, Request}
 
 
 import play.api.libs.json._
 
-class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: UserObj) extends AbstractController(cc) {
+class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: UserDBConnector) extends AbstractController(cc) {
 
 
   def signUp = Action { request =>
@@ -28,7 +28,8 @@ class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: Us
     request.body.asJson.map { json =>
       json.validate[(String, String)].map{
         case (userName, password) =>
-          Ok(userDao.signup( new User(userName, password)))
+
+          Ok(userDao.login( new User(userName, password)))
       }.recoverTotal{
         e => BadRequest("Detected error:"+ JsError.toJson(e))
       }

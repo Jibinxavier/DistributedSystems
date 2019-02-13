@@ -20,7 +20,7 @@ from common.utils import UserDb
  
 
 app = Flask(__name__) 
-
+# TODO Logger
 
 
 
@@ -29,11 +29,11 @@ db =  UserDb()
 def signup_user():
  
     data = request.get_json() 
-    if len(data) >0 :
-        print(db.signup( data["username"],data["password"]))
-        return jsonify({"message":"ok", "code": 5}) 
+    if len(data) >0 : 
+
+        return jsonify(db.signup( data["username"],data["password"]) )
     else:
-        return jsonify({"message":"failed", "code": 0})
+        return jsonify({"message":"Invalid request", "code": 0})
     
 
 @app.route('/user/login', methods=['POST'])

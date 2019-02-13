@@ -64,18 +64,15 @@ class Encryption @Inject()( config: Configuration) {
     return ""
   }
 
-  def tokenGenerator(): List[String] =  {
+  def tokenGenerator(): Map[String,String] =  {
     // TODO get rid of this static randominitvector
     val initVector:String = "RandomInitVector"
 
     var sharedPass = config.get[String]("sharedKey")
     val sessionExpiryTM =  Calendar.getInstance().add(Calendar.HOUR, config.get[Int]("tokenLifeTimeInHours")).toString()
-    var sessionId = randomKeyGenerator().toString()
-
-    val ticket = List(sessionId, sessionExpiryTM)
-
-    ticket.map(x =>encrypt(sharedPass,initVector, x))
-
+    val sessionExpiryTMEnc = encrypt(sharedPass,initVector, sessionExpiryTM)
+    var sessionIdEnc = encrypt(sharedPass,initVector,randomKeyGenerator())
+    Map("sessionId"->sessionIdEnc, "sessionExpiryTM"-> sessionExpiryTMEnc )
 
   }
 

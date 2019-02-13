@@ -35,7 +35,7 @@ class UserDb:
         doc  = { 'username': username, 'password': password }
         user = self.collection.find_one({ 'username': username } )
         if user:  
-            return  {"message":"User already exists", "code": 2}
+            return  {"message":"User already exists", "code":0}
         else:
             return self.insert(doc)
         
@@ -43,8 +43,12 @@ class UserDb:
         user = self.collection.find_one({ 'username': username } )
         if user:  
             print(user)
-            return {"message":str( user['password']==password), "code": 3}
+            if user['password']==password:
+
+                return {"message":str( user['password']==password), "code": 1}
+            else:
+                return  {"message":"Incorrect Password", "code": 0} 
         else:
-            return  {"message":"User doesn't exist", "code": 4} 
+            return  {"message":"User doesn't exist", "code": 0} 
     def _clear_collection(self, collection):
         self.db[collection].drop()

@@ -15,6 +15,7 @@ class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: Us
         case (userName, password) =>
           val result = userDao.signup(new User(userName, password))
           Ok(result.get("message"))
+        case _ =>  BadRequest("Detected error:")
       }.recoverTotal {
         e => BadRequest("Detected error:" + JsError.toJson(e))
       }
@@ -32,11 +33,11 @@ class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: Us
           val result = userDao.login(new User(userName, password))
           if (result.get("code") == "1") {
             val token = encryptor.tokenGenerator()
-            return Ok(result.get("message")).withSession(token)
+             Ok(result.get("message")).withSession(token)
 
           }
           else {
-            return Ok(result.get("message"))
+             Ok(result.get("message"))
           }
 
 

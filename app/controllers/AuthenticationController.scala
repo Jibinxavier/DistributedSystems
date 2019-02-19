@@ -13,8 +13,8 @@ class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: Us
     request.body.asJson.map { json =>
       json.validate[(String, String)].map {
         case (userName, password) =>
-          val result = userDao.signup(new User(userName, password))
-          Ok(result.get("message"))
+          val result = Json.toJson( userDao.signup(new User(userName, password)))
+          Ok(result)
         case _ =>  BadRequest("Detected error:")
       }.recoverTotal {
         e => BadRequest("Detected error:" + JsError.toJson(e))
@@ -29,17 +29,22 @@ class AuthenticationController @Inject()(cc: ControllerComponents,   userDao: Us
     request.body.asJson.map { json =>
       json.validate[(String, String)].map {
         case (userName, password) =>
-
           val result = userDao.login(new User(userName, password))
-          if (result.get("code") == "1") {
+
+          val token = encryptor.tokenGenerator()
+          if (result("code") == "1") {
             val token = encryptor.tokenGenerator()
-             Ok(result.get("message")).withSession(token)
+            Ok(  Json.toJson(result) ).withSession(
+                   "sessionId" -> token("sessionId"),  "sessionExpiryTM"->token("sessionExpiryTM"))
 
           }
           else {
-             Ok(result.get("message"))
+            Ok(  Json.toJson(result) ).withNewSession
           }
 
+//          Ok (  Json.toJson(result)  ).withSession(
+//            "sessionId" -> token("sessionId"),  "sessionExpiryTM"->token("sessionExpiryTM"))
+        case _ =>  BadRequest("Detected error:")
 
       }.recoverTotal {
         e => BadRequest("Detected error:" + JsError.toJson(e))

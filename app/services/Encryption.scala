@@ -72,7 +72,7 @@ class Encryption @Inject()( config: Configuration) {
     val sessionExpiryTM =  Calendar.getInstance().add(Calendar.HOUR, config.get[Int]("tokenLifeTimeInHours")).toString()
     val sessionExpiryTMEnc = encrypt(sharedPass,initVector, sessionExpiryTM)
     var sessionIdEnc = encrypt(sharedPass,initVector,randomKeyGenerator())
-    Map("sessionId"->sessionIdEnc, "sessionExpiryTM"-> sessionExpiryTMEnc )
+    return Map("sessionId"->sessionIdEnc, "sessionExpiryTM"-> sessionExpiryTMEnc )
 
   }
 

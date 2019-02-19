@@ -1,9 +1,0 @@
-[
-  "database/tests/test_user_auth.py::test_signup",
-  "database/tests/test_user_auth.py::test_register_validate_input[--Username is required.]",
-  "database/tests/test_user_auth.py::test_register_validate_input[a--Password is required.]",
-  "database/tests/test_user_auth.py::test_register_validate_input[test-test-already registered]",
-  "database/tests/test_user_auth.py::test_login",
-  "database/tests/test_user_auth.py::test_login_validate_input[a-test-Incorrect username.]",
-  "database/tests/test_user_auth.py::test_login_validate_input[test-a-Incorrect password.]"
-]

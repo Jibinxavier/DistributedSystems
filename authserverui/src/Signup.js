@@ -49,7 +49,7 @@ class Signup extends Component {
     }
     handleClick(event){
         var apiBaseUrl = "http://localhost:9000";
-        console.log("vaules ",this.state.first_name,this.state.last_name,this.state.email,this.state.password);
+        console.log("values ",this.state.first_name,this.state.last_name,this.state.email,this.state.password);
         var self = this;
         var payload = {
             "username": this.state.username,
@@ -58,17 +58,23 @@ class Signup extends Component {
         }
         axios.post(apiBaseUrl + '/signup', payload).then(function(response){
             console.log(response);
-            if(response.data.code == 200){
-                console.log("registration successfull");
+            if(response.data.status == 200){
+                console.log("registration successful");
+                /// once signup is successful the 
                 var loginscreen = [];
                 loginscreen.push(<Login parentContext={this}/>);
-                var loginMessage = "Unknown user. To register";
+                var loginMessage = "Successfully signed up. Continue please login>";
                 self.props.parentContext.setState({loginscreen: loginscreen,
                 loginmessage: loginMessage,
                 buttonLabel: "Signup",
-                isLogin:true
+                loggedIN:false
                 
                 });
+           }
+           else {
+               
+            console.log("Signup errors")
+
            }
             
         }).catch(function (error){

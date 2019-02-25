@@ -16,3 +16,4 @@ dist
 /__pycache__
 /.pytest_cache
 .vagrant/
+.pytest_cache/

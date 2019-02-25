@@ -1,5 +1,5 @@
 import React from 'react';
-
+import FilePreview from './FilePreview';
 const FileList = props => {
   if (!props.files) {
     return (
@@ -19,7 +19,7 @@ const FileList = props => {
       {
         props.files.map( file =>{
           return (
-            <h2>{file.name}</h2>
+            <FilePreview file={file} />
           );
         })
       }

@@ -12,4 +12,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 POST    /signup                    controllers.AuthenticationController.signUp
 POST    /login                     controllers.AuthenticationController.login
-POST    /logout                    controllers.AuthenticationController.  logout
+POST    /logout                    controllers.AuthenticationController.logout

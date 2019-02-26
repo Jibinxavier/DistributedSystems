@@ -59,8 +59,7 @@ class Login extends Component {
             console.log(response)
             if(response.status === 200){ 
                 var homepage = []
-                 homepage.push( 
-                    <HomePage appContext={self.props.appContext}/>)
+                homepage.push( <HomePage appContext={self.props.appContext}/>)
                 self.props.appContext.setState(
                     {loginPage: [], homePage: homepage}
                 )

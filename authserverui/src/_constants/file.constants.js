@@ -12,3 +12,4 @@ export const filesConstants = {
     DELETE_SUCCESS: 'FILE_DELETE_SUCCESS',
     DELETE_FAILURE: 'FILE_DELETE_FAILURE'    
 };
+

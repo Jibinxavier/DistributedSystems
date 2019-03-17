@@ -21,7 +21,7 @@ class HomePage extends React.Component {
                 <h1>Hi {user.firstName}!</h1>
                 console.log("inside home page")
                 <p>You're logged in with React!!</p>
-                <h3>All registered users:</h3>
+                <h3>All files:</h3>
                 {users.loading && <em>Loading users...</em>}
                 {users.error && <span className="text-danger">ERROR: {users.error}</span>}
                 {users.items &&
@@ -38,9 +38,7 @@ class HomePage extends React.Component {
                         )}
                     </ul>
                 }
-                <p>
-                    <Link to="/login">Logout</Link>
-                </p>
+                
             </div>
         );
     }

@@ -2,53 +2,56 @@ import config from 'config';
 import { authHeader } from '../_helpers';
 /*
 
-Service contains functionality to talk 
-to the backend
-
-
+    This service handles file interactions
+    with file server
+    TODO: 
+     * investigate how the file content is uploaded
+     * is it just file path or the actual content
+     *  - it seem like its html object tag
 */
 
 
 
-export const userService = {
-    login,
-    logout,
-    register,
-    getAll,
-    getById,
-    update,
+export const fileService = {
+    upload,
+    listAll,
+    download,
     delete: _delete
 };
 
-function login(username, password) {
+function upload(filepath) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ filepath})
     };
+     // let  reader = new FileReader();
+                    // reader.readAsDataURL(files[0])
+                    
+                    // reader.onload = (e) => {
+                    //     console.warn("file ",e.target.result )
+                    // }
 
-    return fetch(`${config.apiUrl}/users/authenticate`, requestOptions)
+
+    return fetch(`${config.apiUrl}/file/upload`, requestOptions)
         .then(handleResponse)
-        .then(user => {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
+        .then(file => {
+            // // store user details and jwt token in local storage to keep user logged in between page refreshes
+            // localStorage.setItem('user', JSON.stringify(user));
 
-            return user;
+            return "uploaded";
         });
 }
 
-function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('user');
-}
+ 
 
-function getAll() {
+function listAll() {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/files`, requestOptions).then(handleResponse);
 }
 
 function getById(id) {
@@ -69,7 +72,15 @@ function register(user) {
 
     return fetch(`${config.apiUrl}/users/register`, requestOptions).then(handleResponse);
 }
+function download(user) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    };
 
+    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);;
+}
 function update(user) {
     const requestOptions = {
         method: 'PUT',
@@ -87,7 +98,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/files/${id}`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
@@ -96,7 +107,7 @@ function handleResponse(response) {
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
-                logout();
+                 
                 location.reload(true);
             }
 

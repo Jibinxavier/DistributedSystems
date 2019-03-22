@@ -1,21 +1,21 @@
-import { filesConstants } from '../_constants';
+import { fileConstants } from '../_constants';
 
 export function files(state = {}, action) {
-  console.log(filesConstants)
+  console.log(fileConstants)
   switch (action.type) {
-    case filesConstants.GETALL_REQUEST:
+    case fileConstants.UPLOAD_FILE_REQUEST:
       return {
         loading: true
       };
-    case filesConstants.GETALL_SUCCESS:
+    case fileConstants.UPLOAD_FILE_SUCCESS:
       return {
         items: action.files
       };
-    case filesConstants.GETALL_FAILURE:
+    case fileConstants.UPLOAD_FILE_FAILURE:
       return { 
         error: action.error
       };
-    case filesConstants.DELETE_REQUEST:
+    case fileConstants.DELETE_REQUEST:
       // add 'deleting:true' property to file being deleted
       return {
         ...state,
@@ -25,12 +25,12 @@ export function files(state = {}, action) {
             : file
         )
       };
-    case filesConstants.DELETE_SUCCESS:
+    case fileConstants.DELETE_SUCCESS:
       // remove deleted file from state
       return {
         items: state.items.filter(file => file.id !== action.id)
       };
-    case filesConstants.DELETE_FAILURE:
+    case fileConstants.DELETE_FAILURE:
       // remove 'deleting:true' property and add 'deleteError:[error]' property to file 
       return {
         ...state,

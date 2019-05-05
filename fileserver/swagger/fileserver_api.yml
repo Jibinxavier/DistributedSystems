@@ -1,4 +1,5 @@
 swagger: '2.0'
+
 info:
   title: File Server API
   version: "0.1"
@@ -11,6 +12,9 @@ produces:
 #   # enable OAuth protection for all REST endpoints
 #   # (only active if the TOKENINFO_URL environment variable is set)
 #   - oauth2: [uid]
+
+basePath: /0.1
+
 paths:
   /files :
     get:
@@ -27,7 +31,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/definitions/File'
-  /files/{file_id}:file
+  /files/{file_id}:
     get:
       tags: [files]
       operationId: app.get_file

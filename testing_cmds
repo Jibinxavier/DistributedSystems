@@ -1,0 +1,4 @@
+
+
+# swagger: to test the API
+ connexion run fileserver/swagger/fileserver_api.yml --mock=all -v

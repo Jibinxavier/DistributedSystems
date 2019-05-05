@@ -1,6 +1,6 @@
 """
     This class should run as a separate
-    thread. The
+    thread. 
     The sole purpose of this class is to manage the leadership behind the scenes.
 
     * Each server would create a session with consul leader

@@ -15,14 +15,14 @@ How the directory service deals with File servers?
 
  * Directory servers have a list of directories where clients can store
  * They could be namd (f1, id=1), (f2, id=2) and (f3, id=3)
- * And use consistent hashing (why? I don't yet)
+ * And use consistent hashing (why? )
     * This would make the file server more transparent 
     * Variants of consistent hashing could be implemented including storing the data close to the client, thus reducing latency
-
+    * F1, F2, and F3 could be constructed in a way that f1 f2 and f3 could represent different regions
 
  * failure recovery: Part of the data will be replicated to other servers
 
-
+*
 """
 
 
@@ -40,8 +40,9 @@ def list_fs_contents():
     print(obj )
     
     return jsonify({})
+
 @app.route('/v1/cluster/join', methods=['post'])
-def cluster_join(self)):
+def cluster_join():
     """
         Metadata should include :
          *ip

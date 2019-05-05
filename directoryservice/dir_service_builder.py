@@ -2,8 +2,8 @@
     This class will put together the following components 
     for the directory service.
 
-    This module will build components such as:
-    buliding connection pool to the backend
+    The major components 
+     
 """
 import configparser
 import consul

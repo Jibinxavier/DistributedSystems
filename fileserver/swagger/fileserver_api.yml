@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  title: File Server API
+  version: "0.1"
+  description: API to store 
+consumes:
+  - application/json
+produces:
+  - application/json
+# security:
+#   # enable OAuth protection for all REST endpoints
+#   # (only active if the TOKENINFO_URL environment variable is set)
+#   - oauth2: [uid]
+paths:
+  /files :
+    get:
+      tags: [files]
+      operationId: app.get_files
+      summary: Get all files
+      responses:
+        200:
+          description: Returns a list of files
+          schema:
+            type: object
+            properties:
+              files:
+                type: array
+                items:
+                  $ref: '#/definitions/File'
+  /files/{file_id}:file
+    get:
+      tags: [files]
+      operationId: app.get_file
+      summary: Get a single file
+      parameters:
+        - $ref: '#/parameters/file_id'
+      responses:
+        200:
+          description: Return file
+          schema:
+            $ref: '#/definitions/File'
+        404:
+          description: File does not exist
+    put:
+      tags: [files]
+      operationId: app.put_file
+      summary: Create or update a file
+      parameters:
+        - $ref: '#/parameters/file_id'
+        - name: file
+          in: body
+          schema:
+            $ref: '#/definitions/File'
+      responses:
+        200:
+          description: File updated
+        201:
+          description: New file created
+    delete:
+      tags: [files]
+      operationId: app.delete_file
+      summary: Remove a file
+      parameters:
+        - $ref: '#/parameters/file_id'
+      responses:
+        204:
+          description: File was deleted
+        404:
+          description: File does not exist
+
+
+parameters:
+  file_id:
+    name: file_id
+    description: File's Unique identifier
+    in: path
+    type: string
+    required: true
+    pattern: "^[a-zA-Z0-9-]+$"
+
+definitions:
+  File:
+    type: object
+    required:
+      - name
+      - file_type
+    properties:
+      id:
+        type: string
+        description: Unique identifier
+        example: "123"
+        readOnly: true
+      name:
+        type: string
+        description: File's name
+        example: "best file"
+        minLength: 1
+        maxLength: 100
+      file_type:
+        type: string
+        description: Kind of file
+        example: "txt"
+        minLength: 1
+      tags:
+        type: object
+        description: Custom tags
+      created:
+        type: string
+        format: date-time
+        description: Creation time
+        example: "2015-07-07T15:49:51.230+02:00"
+        readOnly: true

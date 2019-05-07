@@ -20,7 +20,15 @@ paths:
     get:
       tags: [files]
       operationId: app.get_files
-      summary: Get all files
+      summary: Get all files names  
+      parameters:
+        - name: limit
+          in: query
+          type: integer
+          format: int32
+          minimum: 0
+          default: 100
+
       responses:
         200:
           description: Returns a list of files

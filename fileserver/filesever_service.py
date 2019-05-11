@@ -13,14 +13,18 @@
     * Need state diagram stuff that will initialise when a server
     starts up
         * Need to integrate the failure recovery stuff 
-        
+    
+    * Need to test how different file types will work e.g jpg
+    Fileserver workflow
+        * Each file will be stored under fileserver
+        * THe directory server will have all
 """
 
 import json
 import threading
 import os
 import requests as url_request
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import consul
 import time
 
@@ -33,44 +37,73 @@ from connexion import NoContent
 
 mem_storage = {"file1":"heoow"}
 
-def get_files(limit):
-    files = mem_storage.keys()[:limit]
-    return 
+FILES_DIR = "./fileserver"
+def setup_file_dirs():
+    """
+        Setup file directory components such as:
+         * storage directory
+        
+    """
+    file_dir = "./fileserver"
+    if os.path.isdir(file_dir):
+
+        os.mkdir(file_dir)
+
+ 
 
 
-def get_pet(pet_id):
-    pet = PETS.get(pet_id)
-    return pet or ('Not found', 404)
 
+def get_file(file_id):
+    """
+        TODO: authorisation
+    """
 
-def put_pet(pet_id, pet):
-    exists = pet_id in PETS
-    pet['id'] = pet_id
-    if exists:
-        logging.info('Updating pet %s..', pet_id)
-        PETS[pet_id].update(pet)
+    file = FILES_DIR+file_id
+    if os.path.isfile(file):
+        return send_from_directory(FILES_DIR, file_id, as_attachment=True )
     else:
-        logging.info('Creating pet %s..', pet_id)
-        pet['created'] = datetime.datetime.utcnow()
-        PETS[pet_id] = pet
-    return NoContent, (200 if exists else 201)
+        return ('Not found', 404)
 
 
-def delete_pet(pet_id):
-    if pet_id in PETS:
-        logging.info('Deleting pet %s..', pet_id)
-        del PETS[pet_id]
+def put_file(file_id, content):
+    file = FILES_DIR+file_id
+    if os.path.isfile(file): 
+        logging.info('Updating file %s..', file_id)
+        
+    else:
+       logging.info('Creating file  %s..', file_id)
+    with open(file, "w+")as f:
+        f.write(content)
+    return NoContent, (200 )
+
+
+def delete_file(file_id):
+    file = FILES_DIR+file_id
+    if os.path.isfile(file):
+        logging.info('Deleting file %s..', file_id)
+        os.remove(file)
         return NoContent, 204
     else:
         return NoContent, 404
 
 
-logging.basicConfig(level=logging.INFO)
-app = connexion.App(__name__)
-app.add_api('swagger.yaml')
-# set the WSGI application callable to allow using uWSGI:
-# uwsgi --http :8080 -w app
-application = app.app
-
+def put_rep_file(file_id, directory, content):
+    """
+        TODO: authorisation -making sure there is some endpoint protection
+         are sure you are talking to the right server
+         mutual tls?
+         2. Consistency- merkele tree and stuff like that 
+    """
+    file =  directory+file_id
+    logging.info('Deleting file %s..', file_id)
+    with open(file) as f:
+        f.write(content)
+    return NoContent, 204
 if __name__ == '__main__':
     # run our standalone gevent server
+    logging.basicConfig(level=logging.INFO)
+    app = connexion.App(__name__)
+    app.add_api('swagger.yaml')
+    # set the WSGI application callable to allow using uWSGI:
+    # uwsgi --http :8080 -w app
+    application = app.app
